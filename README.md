@@ -1,9 +1,9 @@
-# turbo-chopper
-Sample SysVInit service scripts that disable turbo boost on all Intel CPUs using intel\_pstate (Sandy Bridge and later). Will, for obvious reasons, only work on Linux. A sample script is also provided on how to futher limit the max frequency of an Intel cpu below that of its base clock, using intel\_pstate freqeuncy limits.
+﻿# turbo-chopper
+Sample SysVInit service scripts that disable turbo boost on all Intel CPUs using intel\_pstate (Sandy Bridge and later). Will, for obvious reasons, only work on Linux. A sample script is also provided on how to further limit the max frequency of an Intel cpu below that of its base clock, using intel\_pstate frequency limits.
 
 ## How to use the scripts?
 
-The scripts are written with Ubuntu in mind, but should work on any Linux distro as long as somthing in the likes of **systemd-sysv-generator** is used either manually or automagically to convert them to systemd services. Copying the scripts in the */etc/init.d* directory and running:
+The scripts are written with Ubuntu in mind, but should work on any Linux distro as long as something in the likes of **systemd-sysv-generator** is used either manually or automagically to convert them to systemd services. Copying the scripts in the */etc/init.d* directory and running:
 ```
 update-rc.d turbo-chopper defaults
 service turbo-chopper start
@@ -13,7 +13,7 @@ will enable the services to run on boot. The above steps are sufficient on the l
 
 ## What does turbo-chopper-freq do?
 
-Same thing as turbo-chopper with additional enforcing of max frequency limits on all CPU cores. You'll need to replace the frequency levels (in Hz) provided in the script with your desired target max frequency & your cpu's maximum boost frequency, which will be restored once the service is stopped. Note that the desired max frequency needs to be below the base clock in this case, though it is possible to use the script as a simple frequency limiter as well (beyond base frequency), by commenting out the turbo boost limitation.
+Same thing as turbo-chopper with additional enforcing of max frequency limits on all CPU cores. You'll need to replace the frequency levels (in Hz) provided in the script with your desired target max frequency & your CPU’s maximum boost frequency, which will be restored once the service is stopped. Note that the desired max frequency needs to be below the base clock in this case, though it is possible to use the script as a simple frequency limiter as well (beyond base frequency), by commenting out the turbo boost limitation.
 
 ## How are these scripts useful?
 
