@@ -1,0 +1,37 @@
+#!/bin/bash
+
+### BEGIN INIT INFO
+# Provides: turbo-chopper
+# Required-Start:
+# Required-Stop:
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: Disables turbo boost for all Intel CPUs
+# Description: Disables turbo boost for all Intel CPUs
+### END INIT INFO
+
+. /lib/lsb/init-functions
+
+case "$1" in
+start)
+    log_action_cont_msg "Disabling turbo boost..."
+    echo 1 > /sys/devices/system/cpu/intel_pstate/no_turbo
+    log_action_cont_msg "Turbo boost has been disabled."  
+    log_action_end_msg 0
+    exit 0
+    ;;
+stop)
+    log_action_cont_msg "Enabling turbo boost..."
+    echo 0 > /sys/devices/system/cpu/intel_pstate/no_turbo
+    log_action_cont_msg "Turbo boost has been enabled."
+    log_action_end_msg 0
+    exit 0
+    ;;
+*)
+    echo "Invalid option!"
+    exit 1
+    ;;
+esac
+
+exit 0
+

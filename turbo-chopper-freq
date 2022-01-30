@@ -1,0 +1,67 @@
+#!/bin/bash
+
+### BEGIN INIT INFO
+# Provides: turbo-chopper-freq
+# Required-Start:
+# Required-Stop:
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: Disables turbo boost for all Intel CPUs and limits their max frequency
+# Description: Disables turbo boost for all Intel CPUs and limits their max frequency
+### END INIT INFO
+
+. /lib/lsb/init-functions
+
+case "$1" in
+start)
+    #log_action_cont_msg "Disabling HT..."
+    #echo "off" > /sys/devices/system/cpu/smt/control
+    #log_action_cont_msg "HT has been disabled."
+    log_action_cont_msg "Disabling turbo boost..."
+    echo 1 > /sys/devices/system/cpu/intel_pstate/no_turbo
+    log_action_cont_msg "Turbo boost has been disabled."
+    # should work, but for some reason is not persistent
+    #log_action_cont_msg "Limiting CPUs to 50% performance..."
+    #echo 50 > /sys/devices/system/cpu/intel_pstate/max_perf_pct
+    #log_action_cont_msg "Limit has been set."
+    cd /sys/devices/system/cpu
+    log_action_cont_msg "Limiting CPUs to 2.3 Ghz..."
+    for cpu in `ls | grep -E cpu[0-9]{1}`
+    do
+        #desired maximum frequency
+        echo 2300000 > $cpu/cpufreq/scaling_max_freq
+    done
+    log_action_cont_msg "Limit has been set."
+    log_action_end_msg 0
+    exit 0
+    ;;
+stop)
+    #log_action_cont_msg "Enabling HT..."
+    #echo "on" > /sys/devices/system/cpu/smt/control
+    #log_action_cont_msg "HT has been enabled."
+    log_action_cont_msg "Enabling turbo boost..."
+    echo 0 > /sys/devices/system/cpu/intel_pstate/no_turbo
+    log_action_cont_msg "Turbo boost has been enabled."
+    # should work, but for some reason is not persistent
+    #log_action_cont_msg "Removing 50% CPU performance limit..."
+    #echo 100 > /sys/devices/system/cpu/intel_pstate/max_perf_pct
+    #log_action_cont_msg "Limit has been removed."
+    cd /sys/devices/system/cpu
+    log_action_cont_msg "Removing 2.3 Ghz CPU limit..."
+    for cpu in `ls | grep -E cpu[0-9]{1}`
+    do
+        #original maximum boost frequency
+        echo 2600000 > $cpu/cpufreq/scaling_max_freq
+    done
+    log_action_cont_msg "Limit has been removed."
+    log_action_end_msg 0
+    exit 0
+    ;;
+*)
+    echo "Invalid option!"
+    exit 1
+    ;;
+esac
+
+exit 0
+
